@@ -59,6 +59,8 @@ class BaseModel(db.Base):
             uid = generate_id()
         return cls.create_instance(uid, **kwargs)
 
+    
+
     @classmethod
     def get_or_create(cls, uid=None, **kwargs):
         uid = uid or kwargs.get(cls.get_primary_key_name())

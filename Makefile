@@ -1,11 +1,12 @@
 include .env
 
-VARS:=$(shell sed -ne 's/ *\#.*$$//; /./ s/=.*$$// p' .env )
-$(foreach v,$(VARS),$(eval $(shell echo export $(v)="$($(v))")))
+# VARS:=$(shell sed -ne 's/ *\#.*$$//; /./ s/=.*$$// p' .env )
+# $(foreach v,$(VARS),$(eval $(shell echo export $(v)="$($(v))")))
 
 .PHONY: clean
 clean: clean_pyc clean_tmp_t-ipynb
 
+FILES:=  $(shell export $(cat .env | xargs))
 
 
 .PHONY: clean_pyc

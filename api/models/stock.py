@@ -1,4 +1,3 @@
-from enum import unique
 from api.models.base import BaseModel, db
 
 

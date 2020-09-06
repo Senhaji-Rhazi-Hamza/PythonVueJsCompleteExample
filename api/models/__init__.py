@@ -1,6 +1,7 @@
 from api.models.base import db, BaseModel
 from api.models.user import User
 from api.models.stock import Stock
+from api.models.order import Order
 
 from api.utils.classes import all_subclasses
 
@@ -28,7 +29,8 @@ all_BaseModel_subclasses = all_subclasses(BaseModel)
 
 __all__ = [
   "db",
-  "all_BaseModel_subclasses",
   "Stock",
-  "User"
+  "User",
+  "Order"
+  "all_BaseModel_subclasses",
   ]

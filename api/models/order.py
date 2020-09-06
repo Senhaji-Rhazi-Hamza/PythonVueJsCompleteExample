@@ -21,23 +21,23 @@ class Order(BaseModel):
 
     def __init__(self, *args, **kwargs):
       super().__init__(*args, **kwargs)
-      self.update_stock_and_user()
+      #self.update_stock_and_user()
 
 
     @classmethod
     def create_buy_order(cls, **kwargs):
-      cls.create({**kwargs, "is_buy":True})
+      return cls.create(**{**kwargs, "is_buy":True})
     
     @classmethod
     def create_sell_order(cls, **kwargs):
-      cls.create({**kwargs, "is_buy":False})
+      return cls.create(**{**kwargs, "is_buy":False})
 
-    def save(self):
-      self.update_stock_and_user()
-      self.stock.save()
-      self.user.save()
+    # def save(self):
+    #  # self.update_stock_and_user()
+    #  # self.stock.save()
+    #  #s self.user.save()
 
-      super().save()
+    #   super().save()
 
     
     def update_stock_and_user(self):

@@ -1,17 +1,9 @@
 import os
 
-NAME_DB = os.getenv('NAME_DB', 'postgres')
-PORT_DB = os.getenv('PORT_DB', '5432')
-PWD_DB = os.getenv(
-  'PWD_DB',
-  'postgres',
-  )
-HOST_DB = os.getenv(
-  'HOST_DB',
-  'localhost'
-  )
-USER_DB = os.getenv('USER_DB', 'postgres')
+NAME_DB = os.getenv('NAME_DB', 'database.db')
 
-conString = "postgres://YourUserName:YourPassword@YourHost:5432/YourDatabase"
+BASE_PATH = os.path.dirname(os.path.realpath(__file__))
 
-URI = f'postgresql+psycopg2://{USER_DB}:{PWD_DB}@{HOST_DB}:{PORT_DB}/{NAME_DB}'
+DB_FOLDER = os.path.join(BASE_PATH, "db", "data")
+
+URI =f'sqlite:///{os.path.join(DB_FOLDER, NAME_DB)}?check_same_thread=false'

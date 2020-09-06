@@ -7,32 +7,23 @@ from sqlalchemy import (
     Unicode,
     ForeignKey,
     UniqueConstraint,
+    Boolean,
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, event, MetaData
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.inspection import inspect
-from sqlalchemy import DDL
+#from sqlalchemy import DDL
 
-from config import URI, SCHEMAS, SELECTED_SCHEMA
-
-engine = create_engine(URI)
+from api.config import URI
+engine = create_engine(URI, echo=False)
 
 metadata = MetaData()
 Base = declarative_base(metadata=metadata)
 
 
-for schema in SCHEMAS:
-    event.listen(
-        Base.metadata,
-        "before_create",
-        DDL("CREATE SCHEMA IF NOT EXISTS " + schema)
-    )
-
 gen_session = sessionmaker(bind=engine)
-connection = engine.connect().execution_options(
-  schema_translate_map={None: SELECTED_SCHEMA}
-  )
+connection = engine.connect()
 session = gen_session(bind=connection)
 
 __all__ = [
@@ -46,4 +37,5 @@ __all__ = [
     "ForeignKey",
     "relationship",
     "UniqueConstraint",
+    "Boolean"
 ]
