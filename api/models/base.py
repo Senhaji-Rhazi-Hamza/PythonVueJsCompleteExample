@@ -6,9 +6,9 @@ from api.utils.unique_identifier import generate_id
 
 class class_property(object):
 
-    # This class property is inspired from the behaviour of flaskSqlAlchemy
-    # The behaviour of querying directly a model User.query.. is nice, but
-    # the flaskSqlAlchemy dependency is not, so the behaviour is reproduced
+    # This class property is inspired from the behavior of flaskSqlAlchemy
+    # The behavior of querying directly a model User.query.. is nice, but
+    # the flaskSqlAlchemy dependency is not, so the behavior is reproduced
     # with this trick of class property
     def __init__(self, fget):
         self.fget = fget

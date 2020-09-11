@@ -12,7 +12,7 @@
           <b>{{myTitle}}</b>
         </div>
         <small v-if="isBuy" class="d-inline">Price ({{price}} $)</small>
-        <small v-else class="d-inline">Quantity ({{quantityLeft}})</small>
+        <small v-else class="d-inline">Quantity ({{userQuantity}})</small>
       </template>
       <b-form inline>
         <label class="sr-only" for="inline-form-input-name">Name</label>
@@ -25,8 +25,8 @@
           placeholder="Quantity"
           v-model="quantity"
         ></b-input>
-        <button v-if="isBuy" @click="buy" type="button" class="ml-auto btn btn-success">Buy</button>
-        <button v-else type="button" class="ml-auto btn btn-primary">Sell</button>
+        <button v-if="isBuy" @click="operation('buy')" type="button" class="ml-auto btn btn-success">Buy</button>
+        <button v-else  @click="operation('sell')" type="button" class="ml-auto btn btn-primary">Sell</button>
       </b-form>
       <p v-if="error" class="text-danger">Something went wrong</p>
       <p v-if="success" class="text-success">Transaction went well</p>
@@ -35,6 +35,8 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   props: {
     stockInfo: {
@@ -61,37 +63,42 @@ export default {
       this.success = null;
       this.error = null;
     },
-    buy() {
+    operation(operationType='buy') {
       this.init_success_error();
       this.$http
-        .post("http://0.0.0.0:8080/buy", {
+        .post(`http://0.0.0.0:8080/${operationType}`, {
           user_id: this.user_id,
           quantity: this.quantity,
           brand: this.stockInfo.brand,
         })
         .then((response) => {
-          if (response.data.bought) {
+          if (response.data.success) {
             this.quantity = 0;
             this.success = true;
+            this.$store.dispatch("initUpdateUserState", {
+              user_id: this.user_id,
+            });
           } else {
             this.error = true;
           }
         })
-       .catch(error => {
-         this.error = true
-         console.log(error)
-       });
+        .catch((error) => {
+          this.error = true;
+          console.log(error);
+        });
     },
   },
   computed: {
+    ...mapGetters(["userId", "getStockQuantity", "funds", "userState"]),
     myTitle() {
       return this.stockInfo.brand;
     },
     price() {
       return this.stockInfo.price;
     },
-    quantityLeft() {
-      return this.stockInfo.quantity;
+    userQuantity() {
+      //console.log(this.userState.user_stock_infos.find(el => el.brand == this.stockInfo.brand))
+      return this.getStockQuantity(this.stockInfo.brand);
     },
   },
 };

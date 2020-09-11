@@ -22,10 +22,8 @@ STOCKS = [
 ]
 
 
-
-
 USERS = [
-    {"uid": "Hamza", "mail": "hamza@gmail.com", "name": "hamza", "password":"oviouspassword"}
+    {"uid": "Hamza", "mail": "hamza@gmail.com", "name": "hamza", "password":"obvious_password"}
 ]
 
 if __name__ == "__main__":

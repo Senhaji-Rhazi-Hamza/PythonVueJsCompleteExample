@@ -1,4 +1,6 @@
 from sqlalchemy import (
+    and_,
+    or_,
     Column,
     String,
     Integer,
@@ -37,5 +39,7 @@ __all__ = [
     "ForeignKey",
     "relationship",
     "UniqueConstraint",
-    "Boolean"
+    "Boolean",
+    "and_",
+    "or_"
 ]

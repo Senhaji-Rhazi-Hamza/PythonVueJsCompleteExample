@@ -2,6 +2,7 @@ from api.models.base import db, BaseModel
 from api.models.user import User
 from api.models.stock import Stock
 from api.models.order import Order
+from api.models.user_stock_quantity import UserStockQuantity
 
 from api.utils.classes import all_subclasses
 
@@ -19,7 +20,7 @@ def init_app(app):
     app.before_request(open_new_session)
     app.teardown_request(close_session)
 
-# create the tables if not creae
+# create the tables if not created
 
 
 db.Base.metadata.create_all(db.engine)
@@ -31,6 +32,7 @@ __all__ = [
   "db",
   "Stock",
   "User",
-  "Order"
+  "Order",
+  "UserStockQuantity",
   "all_BaseModel_subclasses",
   ]

@@ -1,9 +1,10 @@
 
 <template>
   <div class="row">
+    
     <!-- <stock-item class="col-sm-6" v-for="stockInfo in stocksInfos" :key="stockInfo.id"> </stock-item> -->
     <div class="col-sm-6" v-for="stockInfo in stocksInfos" :key="stockInfo.id">
-      <stock-item :stock-info="stockInfo"></stock-item>
+      <stock-item :isBuy="isBuy" :stock-info="stockInfo"></stock-item>
     </div>
   </div>
 </template>
@@ -12,23 +13,22 @@
 import StockItem from "./StockItem.vue";
 
 export default {
+  props: {
+    isBuy: {
+      type: Boolean,
+      default: true,
+    },
+  },
   components: {
     StockItem,
   },
-  data() {
-    return {
-      stocksInfos: [],
-    };
-  },
-  methods: {
-    update_stocks() {
-      this.$http.get("http://0.0.0.0:8080/stocks").then((response) => {
-        this.stocksInfos = response.data;
-      });
-    },
+  computed: {
+    stocksInfos () {
+      return this.$store.getters.stocksInfos
+    }
   },
   created() {
-    this.update_stocks();
+    this.$store.dispatch('initUpdateStocks')
   },
 };
 </script>

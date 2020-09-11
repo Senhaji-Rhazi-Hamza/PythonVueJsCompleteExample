@@ -1,6 +1,7 @@
 from api.models.base import BaseModel, db
 from sqlalchemy.orm import backref
-
+from api.models.user_stock_quantity import UserStockQuantity
+from api.models.stock import Stock
 class Order(BaseModel):
 
     __tablename__ = "orders"
@@ -21,32 +22,26 @@ class Order(BaseModel):
 
     def __init__(self, *args, **kwargs):
       super().__init__(*args, **kwargs)
-      #self.update_stock_and_user()
 
 
     @classmethod
     def create_buy_order(cls, **kwargs):
-      return cls.create(**{**kwargs, "is_buy":True})
+      user_stock_quantity = UserStockQuantity.get_or_create(user_id=kwargs.get('user_id'), stock_id=kwargs.get('stock_id'))
+      user_stock_quantity.quantity += kwargs.get("quantity") 
+      instance = cls.create(**{**kwargs, "is_buy":True})
+      Stock.add_stock_quantity(kwargs.get('stock_id'), -kwargs.get("quantity"))
+      user_stock_quantity.save()
+      return instance
     
     @classmethod
     def create_sell_order(cls, **kwargs):
-      return cls.create(**{**kwargs, "is_buy":False})
+      user_stock_quantity = UserStockQuantity.get_or_create(user_id=kwargs.get('user_id'), stock_id=kwargs.get('stock_id'))
+      user_stock_quantity.quantity -= kwargs.get("quantity") 
+      instance = cls.create(**{**kwargs, "is_buy":False})
+      Stock.add_stock_quantity(kwargs.get('stock_id'), kwargs.get("quantity"))
+      user_stock_quantity.save()
+      return instance
 
-    # def save(self):
-    #  # self.update_stock_and_user()
-    #  # self.stock.save()
-    #  #s self.user.save()
-
-    #   super().save()
-
-    
-    def update_stock_and_user(self):
-      if self.is_buy:
-        self.stock.quantity = self.stock.quantity - self.quantity
-        self.user.funds -= self.quantity * self.stock.price
-      else:
-        self.stock.quantity = self.stock.quantity + self.quantity
-        self.user.funds += self.quantity * self.stock.price
 
 
 
