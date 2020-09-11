@@ -97,7 +97,6 @@ export default {
       return this.stockInfo.price;
     },
     userQuantity() {
-      //console.log(this.userState.user_stock_infos.find(el => el.brand == this.stockInfo.brand))
       return this.getStockQuantity(this.stockInfo.brand);
     },
   },

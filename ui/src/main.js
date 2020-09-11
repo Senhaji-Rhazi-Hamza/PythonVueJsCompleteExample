@@ -19,6 +19,13 @@ Vue.use(IconsPlugin)
 
 Vue.config.productionTip = false
 
+Vue.filter('round', function (value) {
+  if (Number.isNaN(value)) {
+    return value
+  }
+  return value.toFixed(2)
+})
+
 new Vue({
   store,
   router,
